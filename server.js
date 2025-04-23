@@ -1,5 +1,7 @@
 
-console.log("starting server.js");
+require('dotenv').config();
+
+//const bcrypt = require('bcryptjs');
 
 const mongoose = require('mongoose');
 const express = require('express');
@@ -10,7 +12,7 @@ app.use(express.json());
 
 const connect =async () => {
   try {
-    await mongoose.connect('mongodb+srv://farmerData:2001sa%2A%23@cluster0.8lmqjxp.mongodb.net/farmerSystem?retryWrites=true&w=majority&appName=Cluster0', {
+    await mongoose.connect(process.env.MONGO_URI, {
       //useNewUrlParser: true,
       //useUnifiedTopology: true,
     });
@@ -20,6 +22,9 @@ const connect =async () => {
   }
 };
 connect();
+
+const seedAdmin = require('./Seedadmin'); // or paste function directly here
+seedAdmin();
 
 // Route (test)
 app.get('/', (req, res) => {
