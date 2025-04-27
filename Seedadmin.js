@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const Admin = require('../Models/user'); // Make sure path is correct
+const Admin = require('./Models/user'); // Make sure path is correct
 
 //const PORT = process.env.PORT || 5000;
 
@@ -16,6 +16,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 async function seedAdmin() {
   const existingAdmin = await Admin.findOne({ NIC: '123456789V', role: 'admin' });
+  console.log('Existing Admin:', existingAdmin); // Debugging line
   if (!existingAdmin) {
     const hashedPassword = await bcrypt.hash('admin123', 10);
     await Admin.create({
@@ -28,3 +29,4 @@ async function seedAdmin() {
     console.log('⚠️ Admin already exists.');
   }
 }
+module.exports = seedAdmin;
