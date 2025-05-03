@@ -1,23 +1,22 @@
 
 require('dotenv').config();
 
-//const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const connectDB = require('./config/db'); // Assuming you have a db.js file for MongoDB connection
 const authRoutes = require('./Routes/authRoutes'); // Assuming you have a routes file for authentication
 const farmerRoutes = require('./Routes/farmerRoutes'); // Assuming you have a routes file for farmers
-
-dotenv.config({ path: './config.env' });
-connectDB(); // Connect to MongoDB
+const seedAdmin = require('./Seedadmin'); // Assuming you have a seed file for admin seeding
+const { errorHandler } = require('./middleware/errorMiddleware'); // Assuming you have a middleware file for error handling
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// Middleware
+//Middleware
 app.use(express.json()); // Parse JSON bodies
-app.use(cors()); // Enable CORS for all routes  
+app.use(cors()); // Enable CORS for all routes
 
 // Routes
 app.use('/api/auth/login', authRoutes); // Authentication routes
@@ -28,34 +27,27 @@ app.get('/login', (req, res) => {
   res.send('Server is running 🚀');
 });
 
-//const API_URL = process.env.API_URL || 'http://localhost:5000/api/auth/login';
-//const res = await axios.post('${API_URL}/api/farmer/register', formattedData);
-//MongoDB connection
-const connect =async () => {
+//Error hadling
+app.use(errorHandler); // Use error handling middleware
+
+//start server only after DB is connected
+const startServer = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectDB(); // Connect to MongoDB
     console.log('MongoDB connected!');
+
+    await seedAdmin(); // Seed admin user
+
+
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
   } catch (error) {
-    console.error('MongoDB connection error:', error);
+    console.error('Error starting server:', error);
+    process.exit(1); // Exit process with failure
   }
 };
-connect();
 
-//seedAdmin function to create an admin user
-const seedAdmin = require('./Seedadmin'); // or paste function directly here
-seedAdmin();
+startServer(); // Start the server
 
-//Error handling middleware
-const { errorHandler } = require('./middleware/errorMiddleware');
-app.use(errorHandler); // Use error handling middleware
-app.listen(3000, ()=> console.log('Server is running on port 3000'));
-  
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-console.log(` Server is running on port ${PORT}`);
-});
 

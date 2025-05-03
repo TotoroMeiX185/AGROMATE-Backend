@@ -52,9 +52,10 @@ const registerFarmer = async (req, res) => {
     });
 
     await farmer.save();
+    console.log('Registered Farmer:', farmer); // Debugging line
     res.status(201).json({ message: 'Farmer registered successfully!' });
   
-  }catch (error) {
+    }catch (error) {
     
     //Handle duplicate NIC error
     if (error.code === 11000) {
