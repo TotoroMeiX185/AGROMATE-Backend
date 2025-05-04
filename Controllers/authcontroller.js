@@ -1,4 +1,6 @@
-const User = require('../Models/user');
+const User = require ('../Models/user');
+const bcrypt = require('bcryptjs');
+const generateToken = require('jsonwebtoken');
 
 const loginUser = async (req, res, next) => {
   try {
@@ -6,21 +8,19 @@ const loginUser = async (req, res, next) => {
 
     const user = await User.findOne({ NIC });
 
-    if (!user) {
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Invalid NIC or password' });
     }
 
-    const isMatch = await user.matchPassword(password);
+    const token = generateToken(user._id);
 
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid NIC or password' });
-    }
 
     // Successfully logged in
     res.status(200).json({
       id: user._id,
       NIC: user.NIC,
-      role: user.role
+      role: user.role,
+      token
     });
 
   } catch (error) {

@@ -3,20 +3,20 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const Admin = require('./Models/user'); // Make sure path is correct
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
+mongoose.connect(process.env.MONGO_URI)
+.then(async() => {
   console.log('MongoDB connected');
-  seedAdmin().then(() => mongoose.disconnect());
+  await seedAdmin();
+  mongoose.disconnect();
 });
 
 async function seedAdmin() {
   const existingAdmin = await Admin.findOne({ NIC: '123456789V', role: 'admin' });
   if (!existingAdmin) {
+    const hashedPassword = await bcrypt.hash('admin123', 10); // Hash the password
     await Admin.create({
       NIC: '123456789V',
-      password: 'admin123',
+      password: 'hashedPassword',
       role: 'admin'
     });
     console.log('✅ Admin user created.');
