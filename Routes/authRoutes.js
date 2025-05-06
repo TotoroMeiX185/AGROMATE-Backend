@@ -7,8 +7,6 @@ const { restrictTo } = require('../middleware/roleMiddleware'); // Assuming you 
 // @route   POST /api/auth/login
 router.post('/login', loginUser);
 //router.post('/register', registerUser); // Assuming you have a registerUser function in your controller
-router.get('/Adashboard', restrictTo('admin'), (req, res) => {
-  res.send('Welcome to the admin dashboard!');
-});
+
 
 module.exports = router;
