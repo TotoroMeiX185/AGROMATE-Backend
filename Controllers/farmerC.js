@@ -1,5 +1,6 @@
 // controllers/farmerController.js
 const Farmer = require('../Models/Farmer');
+const bcrypt = require('bcrypt');
 
 const registerFarmer = async (req, res) => {
   try {
@@ -15,7 +16,8 @@ const registerFarmer = async (req, res) => {
       district,
       village,
       isGovEmployee,
-      salaryAbove40k
+      salaryAbove40k,
+      password
     } = req.body;
 
     //validate input
@@ -29,11 +31,16 @@ const registerFarmer = async (req, res) => {
       !province || 
       !district || 
       !village || 
-      (isGovEmployee == undefined) || 
-      (salaryAbove40k == undefined)
+      typeof isGovEmployee !== 'boolean' || 
+      typeof salaryAbove40k !== 'boolean' ||
+      !password
     ) {
       return res.status(400).json({ message: 'All fields are required' });
     }
+
+    // Hash password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Create new Farmer
     const farmer = new Farmer({
@@ -48,7 +55,8 @@ const registerFarmer = async (req, res) => {
       district,
       village,
       isGovEmployee,
-      salaryAbove40k
+      salaryAbove40k,
+      password: hashedPassword
     });
 
     await farmer.save();
