@@ -1,7 +1,6 @@
-const bcrypt = require('bcryptjs');
+import { compare } from 'bcryptjs';
 
-const passwordToHash = 'admin123'; // <- Replace with your desired plain-text password
+const storedHash = '$2b$10$c6mUDhoGTMbTygJ/TnlT1eF5QWI3tdqFvxh8b0r1odBlwX.mgYg/u';
+const isMatch = await compare('admin123', storedHash);
 
-bcrypt.hash(passwordToHash, 10).then(hash => {
-  console.log('New hashed password:', hash);
-});
+console.log('Password match?', isMatch);

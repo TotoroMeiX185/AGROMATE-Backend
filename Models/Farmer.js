@@ -1,7 +1,7 @@
 // models/Farmer.js
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const farmerSchema = new mongoose.Schema({
+const farmerSchema = new Schema({
   fullName: { type: String, required: true, trim:true },
   nic: { type: String, required: true, unique: true },
   dob: { type: Date, required: true, },
@@ -17,6 +17,6 @@ const farmerSchema = new mongoose.Schema({
   password:{type: String, required: true, minlength:8},
 }, { timestamps: true });
 
-const Farmer = mongoose.model('Farmer', farmerSchema);
+const Farmer = model('Farmer', farmerSchema);
 
-module.exports = Farmer;
+export default Farmer;

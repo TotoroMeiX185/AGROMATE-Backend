@@ -1,9 +1,10 @@
 // routes/farmerRoutes.js
-const express = require('express');
-const router = express.Router();
-const { registerFarmer } = require('../Controllers/farmerC');
+import { Router } from 'express';
+const router = Router();
+import farmerController from '../Controllers/farmerC';
+const { registerFarmer } = farmerController;
 
 // POST /api/farmers/register
 router.post('/register', registerFarmer);
 
-module.exports = router;
+export default router;

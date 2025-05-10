@@ -1,17 +1,16 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+import bcrypt from 'bcryptjs';
+import User from './Models/user.js'; // Make sure path is correct
 
-const bcrypt = require('bcryptjs');
-const Admin = require('./Models/user'); // Make sure path is correct
-
-
+dotenv.config();
 
 async function seedAdmin() {
-  const existingAdmin = await Admin.findOne({ NIC: '123456789V', role: 'admin' });
+  const existingAdmin = await User.findOne({ nic: '123456789V', role: 'admin' });
   if (!existingAdmin) {
     const hashedPassword = await bcrypt.hash('admin123', 10); // Hash the password
-    await Admin.create({
-      NIC: '123456789V',
-      password: 'hashedPassword',
+    await create({
+      nic: '123456789V',
+      password: hashedPassword,
       role: 'admin'
     });
     console.log('✅ Admin user created.');
@@ -19,4 +18,4 @@ async function seedAdmin() {
     console.log('⚠️ Admin already exists.');
   }
 }
-module.exports = seedAdmin;
+export default seedAdmin;

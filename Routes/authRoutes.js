@@ -1,12 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const { loginUser } = require('../Controllers/authcontroller');
-//const { protect } = require('../middleware/authMiddleware'); // Assuming you have a middleware for authentication
-const { restrictTo } = require('../middleware/roleMiddleware'); // Assuming you have a middleware for role restriction
+import express from 'express';
 
-// @route   POST /api/auth/login
+import { loginUser } from '../Controllers/authcontroller.js';
+import { protect } from '../middleware/authMiddleware.js'; // Assuming you have a middleware for authentication
+import { restrictTo } from '../middleware/roleMiddleware.js'; // Assuming you have a middleware for role restriction
+
+const router = new express.Router();
+
 router.post('/login', loginUser);
-//router.post('/register', registerUser); // Assuming you have a registerUser function in your controller
+router.get('/admin-data', protect, restrictTo('admin'), (req,res) => {
+    res.json({message:'Welcome admin!'});
+});
 
-
-module.exports = router;
+export default router;

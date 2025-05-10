@@ -1,14 +1,13 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+import express, { json } from 'express';
+import cors from 'cors';
+import { connect as _connect } from 'mongoose';
+import authRoutes from './Routes/authRoutes.js'; // Assuming you have a routes file for authentication
+import farmerRoutes from './Routes/farmerRoutes.js'; // Assuming you have a routes file for farmers
+import seedAdmin from './Seedadmin.js'; // Assuming you have a seed file for admin seeding
+import { errorHandler } from './middleware/errorMiddleware.js'; // Assuming you have a middleware file for error handling
 
-const dotenv = require('dotenv');
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const authRoutes = require('./Routes/authRoutes'); // Assuming you have a routes file for authentication
-const farmerRoutes = require('./Routes/farmerRoutes'); // Assuming you have a routes file for farmers
-const seedAdmin = require('./Seedadmin'); // Assuming you have a seed file for admin seeding
-const { errorHandler } = require('./middleware/errorMiddleware'); // Assuming you have a middleware file for error handling
-
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -16,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 
 
 //Middleware
-app.use(express.json()); // Parse JSON bodies
+app.use(json()); // Parse JSON bodies
 app.use(cors()); // Enable CORS for all routes
 
 // Routes
@@ -34,7 +33,7 @@ app.use(errorHandler); // Use error handling middleware
 //start server only after DB is connected
 const connect = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await _connect(process.env.MONGO_URI);
 
     console.log('MongoDB connected!'); 
 

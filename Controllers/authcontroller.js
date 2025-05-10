@@ -1,13 +1,15 @@
-const User = require ('../Models/user');
-const bcrypt = require('bcryptjs');
-const generateToken = require('../Utils/generateToken');
+import User from '../Models/user.js';
+import bcrypt from 'bcryptjs';
+import {generateToken, verifyToken} from '../Utils/generateToken.js';
 
-const loginUser = async (req, res, next) => {
+export const loginUser = async (req, res, next) => {
   try {
     console.log("REQ.BODY:", req.body);
-    const { NIC, password } = req.body;
+    const { nic, password } = req.body;
 
-    const user = await User.findOne({ NIC });
+    console.log("Looking for user with NIC:", nic);
+    const user = await User.findOne({ nic: nic.trim() });
+    console.log("User found:", user);
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Invalid NIC or password' });
@@ -18,7 +20,7 @@ const loginUser = async (req, res, next) => {
     res.status(200).json({
       user:{
       id: user._id,
-      NIC: user.NIC,
+      nic: user.nic,
       role: user.role,
       },
       token
@@ -30,4 +32,4 @@ const loginUser = async (req, res, next) => {
   }
 };
 
-module.exports = { loginUser };
+

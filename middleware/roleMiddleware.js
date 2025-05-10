@@ -1,5 +1,5 @@
 // middleware/roleMiddleware.js
-const restrictTo = (role) => {
+export const restrictTo = (role) => {
     return (req, res, next) => {
       if (req.user?.role !== role) {
         return res.status(403).json({ message: 'Access denied: ' + role + ' only' });
@@ -8,5 +8,5 @@ const restrictTo = (role) => {
     };
   };
   
-  module.exports = { restrictTo };
+  
   

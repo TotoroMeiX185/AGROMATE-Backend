@@ -1,6 +1,6 @@
 // controllers/farmerController.js
-const Farmer = require('../Models/Farmer');
-const bcrypt = require('bcrypt');
+import Farmer from '../Models/Farmer';
+import { hash } from 'bcrypt';
 
 const registerFarmer = async (req, res) => {
   try {
@@ -40,7 +40,7 @@ const registerFarmer = async (req, res) => {
 
     // Hash password
     const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await hash(password, saltRounds);
 
     // Create new Farmer
     const farmer = new Farmer({
@@ -82,4 +82,4 @@ const registerFarmer = async (req, res) => {
  console.log('Registered Farmer:', req.body); // Debugging line
 };
 
-module.exports = { registerFarmer };
+export default { registerFarmer };
