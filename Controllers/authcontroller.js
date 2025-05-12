@@ -7,8 +7,14 @@ export const loginUser = async (req, res, next) => {
     console.log("REQ.BODY:", req.body);
     const { nic, password } = req.body;
 
-    console.log("Looking for user with NIC:", nic);
-    const user = await User.findOne({ nic: nic.trim() });
+    const trimmedNic = nic.trim();
+    console.log('Searching NIC:', trimmedNic);
+
+    // TEMP debug: list all NICs
+    const allUsers = await User.find({}, { nic: 1 });
+    console.log("All users NICs:", allUsers);
+
+    const user = await User.findOne({ nic:trimmedNic });
     console.log("User found:", user);
 
     if (!user || !(await bcrypt.compare(password, user.password))) {

@@ -1,9 +1,8 @@
 // routes/farmerRoutes.js
-import { Router } from 'express';
-const router = Router();
-import farmerController from '../Controllers/farmerC';
-const { registerFarmer } = farmerController;
+import express from 'express';
+import {registerFarmer} from '../Controllers/farmerC.js';
 
+const router = express.Router();
 // POST /api/farmers/register
 router.post('/register', registerFarmer);
 

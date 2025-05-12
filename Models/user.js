@@ -1,14 +1,24 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-const userSchema = new mongoose.Schema({
+const { Schema, model } = mongoose;
+
+const userSchema = new Schema({
   nic: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ['admin', 'user'], required: true },
+  role: { type: String, enum: ['admin', 'farmer'], default:'farmer', required: true },
 });
+
+// Password check method
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
 //Automatically hash password before saving
 userSchema.pre('save', async function (next) {
+  if (this.isModified('nic')) {
+    this.nic = this.nic.trim();
+  }
   if (!this.isModified('password')) {
     return next();
   }
@@ -17,10 +27,7 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// Compare entered password with hashed password
-userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await compare(enteredPassword, this.password);
-};
 
-export default model('User', userSchema);
+const User = model('User', userSchema);
+export default User;
 

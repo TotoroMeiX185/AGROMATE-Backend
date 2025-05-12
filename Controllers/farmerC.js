@@ -1,8 +1,8 @@
 // controllers/farmerController.js
-import Farmer from '../Models/Farmer';
+import Farmer from '../Models/Farmer.js';
 import { hash } from 'bcrypt';
 
-const registerFarmer = async (req, res) => {
+ export const registerFarmer = async (req, res) => {
   try {
     const {
       fullName,
@@ -82,4 +82,4 @@ const registerFarmer = async (req, res) => {
  console.log('Registered Farmer:', req.body); // Debugging line
 };
 
-export default { registerFarmer };
+
