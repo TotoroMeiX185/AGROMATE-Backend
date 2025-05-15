@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express, { json } from 'express';
 import cors from 'cors';
-import { connect as _connect } from 'mongoose';
+import { connect } from 'mongoose';
 import authRoutes from './Routes/authRoutes.js'; // Assuming you have a routes file for authentication
 import farmerRoutes from './Routes/farmerRoutes.js'; // Assuming you have a routes file for farmers
 import seedAdmin from './Seedadmin.js'; // Assuming you have a seed file for admin seeding
@@ -21,20 +21,15 @@ app.use(cors()); // Enable CORS for all routes
 // Routes
 app.use('/api/auth', authRoutes); // Authentication routes
 app.use('/api/farmer', farmerRoutes); // Farmer routes (assuming you have a farmerRoutes file)
-
-// Route (test)
-app.get('/login', (req,res) => {
-  res.send('Hello from the server!');
-});
+app.use ('/api/admin', authRoutes); // Admin routes (assuming you have a adminRoutes file)
 
 //Error hadling
 app.use(errorHandler); // Use error handling middleware
 
 //start server only after DB is connected
-const connect = async () => {
+const startServer = async () => {
   try {
-    await _connect(process.env.MONGO_URI);
-
+    await connect(process.env.MONGO_URI);
     console.log('MongoDB connected!'); 
 
     await seedAdmin(); // Seed admin user
@@ -49,6 +44,6 @@ const connect = async () => {
   }
 };
 
-connect(); // Start the server
+startServer(); // Start the server
 
 

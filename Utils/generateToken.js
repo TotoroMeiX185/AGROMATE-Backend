@@ -1,10 +1,10 @@
 import pkg from 'jsonwebtoken';
 //import verify from 'jsonwebtoken';
 const { verify, sign } = pkg;
-//const { sign } = pkg;
+///const { sign } = pkg;
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+  return sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '30d',
   });
 };

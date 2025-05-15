@@ -45,7 +45,7 @@ import { hash } from 'bcrypt';
     // Create new Farmer
     const farmer = new Farmer({
       fullName,
-      nic,
+      nic: req.body.nic.trim(),
       dob,
       gender,
       address,

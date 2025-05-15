@@ -1,7 +1,7 @@
-import jwt from 'jsonwebtoken';
-import User from '../Models/user.js';
+import pkg from 'jsonwebtoken';
+import admin from '../Models/admin.js';
 
-const {verify} = jwt;
+const {verify} = pkg;
 
 export const protect = async (req, res, next) => {
   let token;
@@ -15,7 +15,7 @@ export const protect = async (req, res, next) => {
 
       const decoded = verify(token, process.env.JWT_SECRET);
 
-      req.user = await User.findById(decoded.id).select('-password'); // Add user to req, exclude password
+      req.user = await admin.findById(decoded.id).select('-password'); // Add user to req, exclude password
       next();
     } catch (error) {
       console.error('Token verification failed:', error);

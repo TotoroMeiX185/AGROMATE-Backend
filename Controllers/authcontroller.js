@@ -1,8 +1,11 @@
-import User from '../Models/user.js';
+import admin from '../Models/admin.js';
 import bcrypt from 'bcryptjs';
 import {generateToken, verifyToken} from '../Utils/generateToken.js';
 
 export const loginUser = async (req, res, next) => {
+
+  const {nic, password} = req.body;
+  console.log("Login attempt with NIC:", nic , password);
   try {
     console.log("REQ.BODY:", req.body);
     const { nic, password } = req.body;
@@ -11,15 +14,24 @@ export const loginUser = async (req, res, next) => {
     console.log('Searching NIC:', trimmedNic);
 
     // TEMP debug: list all NICs
-    const allUsers = await User.find({}, { nic: 1 });
+    const allUsers = await admin.find({}, { nic: 1 });
     console.log("All users NICs:", allUsers);
 
-    const user = await User.findOne({ nic:trimmedNic });
+    const user = await admin.findOne({ nic:trimmedNic });
     console.log("User found:", user);
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ message: 'Invalid NIC or password' });
+
+    if (user) {
+      const passwordMatch = await bcrypt.compare(password, user.password);  
+      console.log("Password comparison result:", passwordMatch);
+
+      if (!passwordMatch) {
+        return res.status(401).json({ message: 'Invalid credentials' });
+      }
+    } else {
+      return res.status(401).json({message:'Invalid NIC or password'});
     }
+
 
     const token = generateToken(user._id);
     // Successfully logged in
