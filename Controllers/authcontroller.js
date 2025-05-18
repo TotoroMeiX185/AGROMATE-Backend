@@ -1,4 +1,4 @@
-import admin from '../Models/admin.js';
+import Admin from '../Models/Admin.js'; // Adjust the path as necessary
 import bcrypt from 'bcryptjs';
 import {generateToken, verifyToken} from '../Utils/generateToken.js';
 
@@ -14,10 +14,10 @@ export const loginUser = async (req, res, next) => {
     console.log('Searching NIC:', trimmedNic);
 
     // TEMP debug: list all NICs
-    const allUsers = await admin.find({}, { nic: 1 });
+    const allUsers = await Admin.find({}, { nic: 1 });
     console.log("All users NICs:", allUsers);
 
-    const user = await admin.findOne({ nic:trimmedNic });
+    const user = await Admin.findOne({ nic:trimmedNic });
     console.log("User found:", user);
 
 

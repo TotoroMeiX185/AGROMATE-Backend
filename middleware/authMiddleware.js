@@ -1,5 +1,5 @@
 import pkg from 'jsonwebtoken';
-import admin from '../Models/admin.js';
+import admin from '../Models/Admin.js'; // Adjust the path as necessary
 
 const {verify} = pkg;
 

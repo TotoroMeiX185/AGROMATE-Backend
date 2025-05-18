@@ -6,13 +6,11 @@ import authRoutes from './Routes/authRoutes.js'; // Assuming you have a routes f
 import farmerRoutes from './Routes/farmerRoutes.js'; // Assuming you have a routes file for farmers
 import seedAdmin from './Seedadmin.js'; // Assuming you have a seed file for admin seeding
 import { errorHandler } from './middleware/errorMiddleware.js'; // Assuming you have a middleware file for error handling
-
+import AfarmerRoutes1 from './Routes/AfarmerRoutes1.js'; // Assuming you have a routes file for admin dashboard
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-
 
 //Middleware
 app.use(json()); // Parse JSON bodies
@@ -22,7 +20,7 @@ app.use(cors()); // Enable CORS for all routes
 app.use('/api/auth', authRoutes); // Authentication routes
 app.use('/api/farmer', farmerRoutes); // Farmer routes (assuming you have a farmerRoutes file)
 app.use ('/api/admin', authRoutes); // Admin routes (assuming you have a adminRoutes file)
-
+app.use('/api/farmers', AfarmerRoutes1); // Farmer routes (assuming you have a farmerRoutes file)
 //Error hadling
 app.use(errorHandler); // Use error handling middleware
 

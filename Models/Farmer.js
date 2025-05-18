@@ -3,7 +3,7 @@ import { Schema, model } from 'mongoose';
 
 const farmerSchema = new Schema({
   fullName: { type: String, required: true, trim:true },
-  nic: { type: String, required: true, unique: true, trim:true, match: [/^[0-9]{9}[Vv]$/, 'Invalid NIC format'] },
+  nic: { type: String, required: true, unique: true, trim:true, match: [/^[0-9]{12}[Vv]?$/, 'Invalid NIC format'] },
   dob: { type: Date, required: true, },
   gender: { type: String, required: true, enum:['Male', 'Female'] },
   address: { type: String, required: true, trim:true },
