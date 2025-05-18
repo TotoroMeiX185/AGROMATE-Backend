@@ -15,7 +15,7 @@ router.post("/register", async (req, res) => {
 });
 
 // Get all pending farmers (admin view)
-router.get("/pending", async (req, res) => {
+router.get("/pending", async (_req, res) => {
   try {
     const pendingFarmers = await Farmer1Schema.find({ status: "pending" });
     res.json(pendingFarmers);
@@ -27,8 +27,8 @@ router.get("/pending", async (req, res) => {
 // Search farmer by NIC (can return any status)
 router.get("/:nic", async (req, res) => {
   try {
-    const farmer = await Farmer1Schema.findOne({ nic: req.params.nic });
-    if (!farmer) return res.status(404).json({ error: "Not found" });
+    const farmer = await Farmer1Schema.findOne({ nic: req.params.nic, status: "approved" });
+    if (!farmer) return res.status(404).json({ error: "Farmer not found or not approved" });
     res.json(farmer);
   } catch (err) {
     res.status(500).json({ error: "Search failed" });

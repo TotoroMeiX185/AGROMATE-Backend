@@ -1,5 +1,6 @@
 // models/Farmer.js
-import { Schema, model } from 'mongoose';
+import pkg from 'mongoose';
+const { Schema, model, models } = pkg;
 
 const farmerSchema = new Schema({
   fullName: { type: String, required: true, trim:true },
@@ -15,8 +16,13 @@ const farmerSchema = new Schema({
   isGovEmployee: { type: Boolean, required: true },
   salaryAbove40k: { type: Boolean, required: true },
   password:{type: String, required: true, minlength:8},
+  status: {
+    type: String,
+    enum: ['pending', 'approved', 'rejected'],
+    default: 'pending'
+  }
 }, { timestamps: true });
 
-const Farmer = model('Farmer', farmerSchema);
+const Farmer = models.Farmer || model('Farmer', farmerSchema);
 
 export default Farmer;

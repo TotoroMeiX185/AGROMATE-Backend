@@ -1,9 +1,10 @@
 // models/Farmer.js
-import mongoose, { Schema, model } from "mongoose";
+import mongoose, { Schema, model,} from "mongoose";
 
 const Farmer1Schema = new Schema({
   fullName: String,
   nic: { type: String, unique: true },
+  password: String,
   dob: String,
   gender: String,
   address: String,
