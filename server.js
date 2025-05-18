@@ -7,6 +7,7 @@ import farmerRoutes from './Routes/farmerRoutes.js'; // Assuming you have a rout
 import seedAdmin from './Seedadmin.js'; // Assuming you have a seed file for admin seeding
 import { errorHandler } from './middleware/errorMiddleware.js'; // Assuming you have a middleware file for error handling
 import AfarmerRoutes1 from './Routes/AfarmerRoutes1.js'; // Assuming you have a routes file for admin dashboard
+import weatherRoutes from './Routes/weatherRoute.js'; // Assuming you have a routes file for weather API
 dotenv.config();
 
 const app = express();
@@ -21,6 +22,8 @@ app.use('/api/auth', authRoutes); // Authentication routes
 app.use('/api/farmer', farmerRoutes); // Farmer routes (assuming you have a farmerRoutes file)
 app.use ('/api/admin', authRoutes); // Admin routes (assuming you have a adminRoutes file)
 app.use('/api/farmers', AfarmerRoutes1); // Farmer routes (assuming you have a farmerRoutes file)
+app.use('/api/weather', weatherRoutes); // Weather API routes
+
 //Error hadling
 app.use(errorHandler); // Use error handling middleware
 
