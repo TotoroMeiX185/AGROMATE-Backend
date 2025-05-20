@@ -1,7 +1,7 @@
 import Admin from '../Models/Admin.js'; // Adjust the path as necessary
 import bcrypt from 'bcryptjs';
 import Afarmer from '../Models/Afarmer.js';
-import {generateToken, verifyToken} from '../Utils/generateToken.js';
+import {generateToken} from '../Utils/generateToken.js';
 
 export const loginUser = async (req, res, next) => {
 try {
