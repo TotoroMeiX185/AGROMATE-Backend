@@ -9,6 +9,7 @@ dotenv.config();
       nic: { type: String, required: true, unique: true },
       password: { type: String, required: true },
       role: { type: String, enum: ['admin', 'farmer'], default: 'farmer', required: true },
+      isApproved: { type: Boolean, default: false }
     });
     
     // Create a new model

@@ -2,8 +2,8 @@ import pkg from 'jsonwebtoken';
 const { verify, sign } = pkg;
 
 
-const generateToken = (id) => {
-  return sign({ id }, process.env.JWT_SECRET, {
+const generateToken = (user) => {
+  return sign({ id:user._id, role:user.role }, process.env.JWT_SECRET, {
     expiresIn: '30d',
   });
 };

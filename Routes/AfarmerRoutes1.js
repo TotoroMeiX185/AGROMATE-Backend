@@ -2,6 +2,7 @@
 import { Router } from "express";
 const router = Router();
 import Farmer1Schema from "../Models/Afarmer.js";
+import Farmer from "../Models/Farmer.js";
 
 // Register a farmer (called by user registration form)
 router.post("/register", async (req, res) => {
@@ -54,6 +55,20 @@ router.put("/:nic/:action", async (req, res) => {
     res.json({ message: `Farmer ${nic} ${action}d`, farmer });
   } catch (err) {
     res.status(500).json({ error: "Failed to update farmer status" });
+  }
+});
+
+router.delete('/:nic', async (req, res) => {
+  const { nic } = req.params;
+  try {
+    const deleted = await Farmer.findOneAndDelete({ nic });
+    if (!deleted) {
+      return res.status(404).json({ message: 'Farmer not found' });
+    }
+    res.json({ message: 'Farmer deleted successfully' });
+  } catch (error) {
+    console.error('Delete error:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

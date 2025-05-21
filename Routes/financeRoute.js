@@ -2,6 +2,7 @@ import { Router } from 'express';
 const router = Router();
 import Finance from '../Models/Finance.js';
 import { authenticateToken} from '../middleware/authMiddleware.js';
+import Farmer from '../Models/Farmer.js'; 
 
 router.post('/', authenticateToken, async (req, res) => {
   try {
@@ -19,7 +20,7 @@ router.post('/', authenticateToken, async (req, res) => {
       otherExpenses = 0
     } = req.body;
 
-    const farmer = await farmer.findById(req.user.id);
+    const farmer = await Farmer.findById(req.user.id);
 
     if (!farmer) {
       return res.status(404).json({ message: 'Farmer not found' });
@@ -61,7 +62,7 @@ router.post('/', authenticateToken, async (req, res) => {
     await finance.save();
 
     res.status(201).json({ message: 'Financial data saved', totalIncome, totalExpenses });
-     subsidiesDisabled: isGovEmployee && salary > 40000
+     //subsidiesDisabled: isGovEmployee && salaryAbove40k > 40000
   } catch (error) {
     console.error('Error saving financial data:', error);
     res.status(500).json({ message: 'Internal server error' });

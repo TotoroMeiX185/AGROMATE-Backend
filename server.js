@@ -11,7 +11,7 @@ import weatherRoutes from './Routes/weatherRoute.js'; // Assuming you have a rou
 import cropRoute from './Routes/cropRoute.js'; // Assuming you have a routes file for crops
 import marketRoute from './Routes/marketRoute.js'; // Assuming you have a routes file for market prices
 import financeRoute from './Routes/financeRoute.js'; // Assuming you have a routes file for finance
-
+import AcropRoute from './Routes/AcropRoute.js'; // Assuming you have a routes file for crops
 
 dotenv.config();
 
@@ -31,7 +31,8 @@ app.use('/api/weather', weatherRoutes); // Weather API routes
 app.use('/api/crops', cropRoute); // Crop routes (assuming you have a cropRoutes file)
 app.use('/api/market', marketRoute); // Market price routes (assuming you have a marketRoutes file)
 app.use('/api/finance', financeRoute); // Finance routes (assuming you have a financeRoutes file)
-app.use('api/farmer', farmerRoutes); // Farmer routes (assuming you have a farmerRoutes file)
+app.use('/api/crops', AcropRoute); // Crop routes (assuming you have a cropRoutes file)
+//app.use('api/farmer', farmerRoutes); // Farmer routes (assuming you have a farmerRoutes file)
 //Error hadling
 app.use(errorHandler); // Use error handling middleware
 
