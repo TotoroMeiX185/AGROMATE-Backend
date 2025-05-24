@@ -1,10 +1,13 @@
 import { Router } from 'express';
 const router = Router();
 import Finance from '../Models/Finance.js';
-import { authenticateToken} from '../middleware/authMiddleware.js';
+import { protect} from '../middleware/authMiddleware.js';
 import Farmer from '../Models/Farmer.js'; 
+//import { createFinanceRecord } from '../Controllers/financeC.js';
 
-router.post('/', authenticateToken, async (req, res) => {
+
+
+router.post('/', protect, async (req, res) => {
   try {
     
     const {
@@ -33,6 +36,7 @@ router.post('/', authenticateToken, async (req, res) => {
     const totalIncome =
       safeNum(cropSale) +
       safeNum(moneySubsidies) +
+      safeNum(fertilizerSubsidies) +
       safeNum(loan) +
       safeNum(otherIncome);
 
@@ -61,8 +65,8 @@ router.post('/', authenticateToken, async (req, res) => {
 
     await finance.save();
 
-    res.status(201).json({ message: 'Financial data saved', totalIncome, totalExpenses });
-     //subsidiesDisabled: isGovEmployee && salaryAbove40k > 40000
+    res.status(200).json({ message: 'Financial data saved', totalIncome, totalExpenses });
+     disableSubsidies: isGovEmployee && salaryAbove40k > 40000
   } catch (error) {
     console.error('Error saving financial data:', error);
     res.status(500).json({ message: 'Internal server error' });

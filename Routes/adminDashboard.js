@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const router = Router();
 import { countDocuments, find } from '../Models/Farmer';
-import { aggregate } from '../models/Crop';
+import { aggregate } from '../Models/Crop';
 
 // GET /api/admin/stats/registered-farmers
 router.get('/registered-farmers', async (req, res) => {

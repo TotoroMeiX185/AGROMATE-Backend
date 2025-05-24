@@ -32,6 +32,8 @@ app.use('/api/crops', cropRoute); // Crop routes (assuming you have a cropRoutes
 app.use('/api/market', marketRoute); // Market price routes (assuming you have a marketRoutes file)
 app.use('/api/finance', financeRoute); // Finance routes (assuming you have a financeRoutes file)
 app.use('/api/crops', AcropRoute); // Crop routes (assuming you have a cropRoutes file)
+app.use('/api/crops',farmerRoutes);
+
 //app.use('api/farmer', farmerRoutes); // Farmer routes (assuming you have a farmerRoutes file)
 //Error hadling
 app.use(errorHandler); // Use error handling middleware

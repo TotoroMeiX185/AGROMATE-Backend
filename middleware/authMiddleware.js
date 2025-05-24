@@ -1,7 +1,7 @@
 import pkg from 'jsonwebtoken';
 import admin from '../Models/Admin.js';
 import Farmer from '../Models/Farmer.js';
-import jwt from'jsonwebtoken';
+//import jwt from'jsonwebtoken';
 
 const {verify} = pkg;
 
@@ -46,15 +46,4 @@ export const isAdmin = (req, res, next) => {
   return res.status(403).json({ message: 'Admin access required' });
 };
 
-export const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
 
-  if (!token) return res.sendStatus(401);
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user; // contains id and role
-    next();
-  });
-};
