@@ -2,16 +2,17 @@ import dotenv from 'dotenv';
 import express, { json } from 'express';
 import cors from 'cors';
 import { connect } from 'mongoose';
-import authRoutes from './Routes/authRoutes.js'; // Assuming you have a routes file for authentication
-import farmerRoutes from './Routes/farmerRoutes.js'; // Assuming you have a routes file for farmers
-import seedAdmin from './Seedadmin.js'; // Assuming you have a seed file for admin seeding
-import { errorHandler } from './middleware/errorMiddleware.js'; // Assuming you have a middleware file for error handling
-import AfarmerRoutes1 from './Routes/AfarmerRoutes1.js'; // Assuming you have a routes file for admin dashboard
-import weatherRoutes from './Routes/weatherRoute.js'; // Assuming you have a routes file for weather API
-import cropRoute from './Routes/cropRoute.js'; // Assuming you have a routes file for crops
-import marketRoute from './Routes/marketRoute.js'; // Assuming you have a routes file for market prices
-import financeRoute from './Routes/financeRoute.js'; // Assuming you have a routes file for finance
-import AcropRoute from './Routes/AcropRoute.js'; // Assuming you have a routes file for crops
+import authRoutes from './Routes/authRoutes.js'; 
+import farmerRoutes from './Routes/farmerRoutes.js'; 
+import seedAdmin from './Seedadmin.js'; 
+import { errorHandler } from './middleware/errorMiddleware.js'; 
+import AfarmerRoutes1 from './Routes/AfarmerRoutes1.js'; 
+import weatherRoutes from './Routes/weatherRoute.js'; 
+import cropRoute from './Routes/cropRoute.js'; 
+import marketRoute from './Routes/marketRoute.js'; 
+import financeRoute from './Routes/financeRoute.js'; 
+import AcropRoute from './Routes/AcropRoute.js'; 
+import Fdashboard from './Routes/Fdashboard.js'; 
 
 dotenv.config();
 
@@ -19,22 +20,23 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 //Middleware
-app.use(json()); // Parse JSON bodies
+app.use(express.json()); // Parse JSON bodies
 app.use(cors()); // Enable CORS for all routes
 
 // Routes
-app.use('/api/auth', authRoutes); // Authentication routes
-app.use('/api/farmer', farmerRoutes); // Farmer routes (assuming you have a farmerRoutes file)
-app.use ('/api/admin', authRoutes); // Admin routes (assuming you have a adminRoutes file)
-app.use('/api/farmers', AfarmerRoutes1); // Farmer routes (assuming you have a farmerRoutes file)
-app.use('/api/weather', weatherRoutes); // Weather API routes
-app.use('/api/crops', cropRoute); // Crop routes (assuming you have a cropRoutes file)
-app.use('/api/market', marketRoute); // Market price routes (assuming you have a marketRoutes file)
-app.use('/api/finance', financeRoute); // Finance routes (assuming you have a financeRoutes file)
-app.use('/api/crops', AcropRoute); // Crop routes (assuming you have a cropRoutes file)
+app.use('/api/auth', authRoutes); 
+app.use('/api/farmer', farmerRoutes); 
+app.use ('/api/admin', authRoutes); 
+app.use('/api/farmers', AfarmerRoutes1); 
+app.use('/api', weatherRoutes); 
+app.use('/api/crops', cropRoute); 
+app.use('/api/market', marketRoute); 
+app.use('/api/finance', financeRoute); 
+app.use('/api/crops', AcropRoute); 
 app.use('/api/crops',farmerRoutes);
+app.use('/api/dashboard',Fdashboard); 
 
-//app.use('api/farmer', farmerRoutes); // Farmer routes (assuming you have a farmerRoutes file)
+
 //Error hadling
 app.use(errorHandler); // Use error handling middleware
 

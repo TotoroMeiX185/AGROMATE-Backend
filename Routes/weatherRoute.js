@@ -2,14 +2,17 @@ import { Router } from 'express';
 import axios from 'axios';
 const router = Router();
 
-const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY; // Move to .env in production
 
 router.get('/weather', async (req, res) => {
-  const city = req.query.city || 'Monaragalala';
+   
+  const city = req.query.city || 'Monaragala';
+  const API_KEY = '95e9434037da3ab29aeab0e01ed593a3';
 
   try {
-    const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=Monaragala&appid=${API_KEY}&units=metric`);
-      res.json(response.data);
+    const weatherRes = await axios.get(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+    );
+   res.json(weatherRes.data);
       
   } catch (error) {
     console.error('Weather API error:', error.message);
