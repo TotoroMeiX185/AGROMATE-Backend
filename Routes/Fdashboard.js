@@ -1,15 +1,14 @@
 import { Router } from 'express';
-const router = Router();
-import Crops from '../Models/Dcrops.js';
-import Income from '../Models/Dincome.js';
-import Expense from '../Models/Dexpense.js';
 import {protect} from '../middleware/authMiddleware.js';
+import Crop from '../Models/Crop.js';
+import Finance from '../Models/Finance.js';
 
+const router = Router();
 // GET /api/dashboard/crops
 router.get('/crops', protect, async (req, res) => {
 
   try {
-    const crops = await Crops.find({ farmer: req.user.id });
+    const crops = await Crop.find({ farmerId: req.user.id });
     res.json(crops);
   } catch (err) {
     res.status(500).json({ error: 'Server error fetching crops' });
@@ -19,13 +18,9 @@ router.get('/crops', protect, async (req, res) => {
 // GET /api/dashboard/income
 router.get('/income', protect, async (req, res) => {
 
-const amount = req.query.amount;
-
   try {
-    const filter = {farmer: req.user.id};
-    if (amount !== undefined) filter.amount = amount; 
-    const incomes = await Income.find(filter);
-    const totalIncome = incomes.reduce((sum, i) => sum + i.amount, 0);
+    const record = await Finance.find({farmerId: req.user.id});
+    const totalIncome = record.reduce((sum, record) => sum + Number(record.totalIncome || 0), 0);
      
     res.json({ totalIncome });
   } catch (err) {
@@ -36,13 +31,9 @@ const amount = req.query.amount;
 // GET /api/dashboard/expenses
 router.get('/expenses', protect, async (req, res) => {
 
-  const amount = req.query.amount;
-
   try {
-    const filter = {farmer: req.user.id};
-    if (amount !== undefined) filter.amount = amount;
-    const expenses = await Expense.find(filter);
-    const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+    const record = await Finance.find({farmerId: req.user.id});
+    const totalExpenses = record.reduce((sum, record) => sum + Number(record.totalExpenses || 0), 0);
    
     res.json({ totalExpenses });
   } catch (err) {

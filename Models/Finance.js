@@ -19,6 +19,8 @@ const FinanceSchema = new Schema({
   totalIncome: {type:Number, min: 0},
   totalExpenses: {type:Number, min: 0},
   createdAt: { type: Date, default: Date.now }
+},{
+timestamps:true
 });
 
 export default model('Finance', FinanceSchema);
