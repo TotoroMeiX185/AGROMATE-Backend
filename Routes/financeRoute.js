@@ -5,6 +5,17 @@ import { protect} from '../middleware/authMiddleware.js';
 import Farmer from '../Models/Farmer.js'; 
 //import { createFinanceRecord } from '../Controllers/financeC.js';
 
+const {
+  getFinanceByNIC,
+  deleteFinanceByNIC,
+} = require('../Controllers/financeC.js');
+
+// GET /api/finance/:nic
+router.get('/:nic', getFinanceByNIC);
+
+// DELETE /api/finance/:nic
+router.delete('/:nic', deleteFinanceByNIC);
+
 
 
 router.post('/', protect, async (req, res) => {

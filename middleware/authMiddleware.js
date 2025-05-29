@@ -17,11 +17,19 @@ export const protect = async (req, res, next) => {
       console.log('Token:', token); // Log the token for debugging
 
       const decoded = verify(token, process.env.JWT_SECRET);
+      req.user ={
+        id:decoded.id,
+        role:decoded.role
+      };
       console.log('Decoded token:', decoded); // Log the decoded token for debugging
 
-      const user = await admin.findById(decoded.id).select('-password') || 
-      await Farmer.findById(decoded.id).select('-password'); // Add user to req, exclude password
-      
+      let user = await admin.findById(decoded.id).select('-password');
+      if (user) {
+        user.role = 'admin'; // Add role manually
+      } else {
+        user = await Farmer.findById(decoded.id).select('-password'); // Add user to req, exclude password
+        if (user) user.role = 'farmer'; // Add role manually
+      }
       if(!user) {
         return res.status(401).json({ message: 'Not authorized, no user found' });
       }
@@ -41,9 +49,10 @@ export const protect = async (req, res, next) => {
 
 export const isAdmin = (req, res, next) => {
   if (req.user && req.user.role === 'admin') {
-    return next();
+   return next();
+  } else{
+ return res.status(403).json({ message: 'Admin access required' });
   }
-  return res.status(403).json({ message: 'Admin access required' });
 };
 
 

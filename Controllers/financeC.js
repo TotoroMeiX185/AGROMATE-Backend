@@ -2,6 +2,7 @@ import Farmer from '../Models/Farmer.js';
 import { protect } from '../middleware/authMiddleware.js';
 import { Router } from 'express';
 const router = Router();
+import Finance from '../Models/Finance.js';
 
 //Get Farmer profile 
 export const getFarmerProfile = async (req, res) => {
@@ -16,6 +17,35 @@ export const getFarmerProfile = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// GET finance data by NIC
+const getFinanceByNIC = async (req, res) => {
+  try {
+    const { nic } = req.params;
+    const finance = await Finance.findOne({ nic });
+    if (!finance) {
+      return res.status(404).json({ message: 'Finance data not found for this NIC' });
+    }
+    res.status(200).json(finance);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error while fetching finance data' });
+  }
+};
+
+// DELETE finance record by NIC
+const deleteFinanceByNIC = async (req, res) => {
+  try {
+    const { nic } = req.params;
+    const deleted = await Finance.findOneAndDelete({ nic });
+    if (!deleted) {
+      return res.status(404).json({ message: 'No finance record found to delete' });
+    }
+    res.status(200).json({ message: 'Finance record deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error while deleting finance data' });
+  }
+};
+
 
 router.post('/', protect, async (req, res) => {
   try {

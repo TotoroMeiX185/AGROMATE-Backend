@@ -48,8 +48,9 @@ try {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
 
-    const token = generateToken(user._id);
-     console.log('✅ Login successful:', { nic: user.nic, role });
+const token = generateToken(user._id, role);
+
+    console.log('✅ Login successful:', { nic: user.nic, role });
     
      // Successfully logged in
     res.status(200).json({
