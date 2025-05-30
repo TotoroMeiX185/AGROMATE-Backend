@@ -19,29 +19,46 @@ export const getFarmerProfile = async (req, res) => {
 };
 
 // GET finance data by NIC
-const getFinanceByNIC = async (req, res) => {
+export const getFinanceByNIC = async (req, res) => {
   try {
+    
+    console.log('HIT GET /api/finance/:nic');
     const { nic } = req.params;
-    const finance = await Finance.findOne({ nic });
-    if (!finance) {
+
+    const farmer = await Farmer.findOne({ nic });
+    if (!farmer) {
+      return res.status(404).json({ message: 'Farmer not found with this NIC' });
+    }
+
+    const finance = await Finance.find({farmerId:farmer._id }).populate('farmerId', 'name nic'); // Assuming farmerId is the NIC in your schema
+    
+    if (!finance || finance.length === 0) {
       return res.status(404).json({ message: 'Finance data not found for this NIC' });
     }
     res.status(200).json(finance);
   } catch (error) {
+     console.error('Error fetching finance data:', error.message);
     res.status(500).json({ message: 'Server error while fetching finance data' });
   }
 };
 
 // DELETE finance record by NIC
-const deleteFinanceByNIC = async (req, res) => {
+export const deleteFinanceByNIC = async (req, res) => {
   try {
     const { nic } = req.params;
-    const deleted = await Finance.findOneAndDelete({ nic });
-    if (!deleted) {
+
+    const farmer = await Farmer.findOne({ nic });
+    if (!farmer) {
+      return res.status(404).json({ message: 'Farmer not found' });
+    }
+
+    const deleted = await Finance.findAndDelete({ farmerId: farmer._id });
+    if (deleted.deletedCount === 0) {
       return res.status(404).json({ message: 'No finance record found to delete' });
     }
     res.status(200).json({ message: 'Finance record deleted successfully' });
   } catch (error) {
+    console.error('Error deleting finance data:', error.message);
     res.status(500).json({ message: 'Server error while deleting finance data' });
   }
 };

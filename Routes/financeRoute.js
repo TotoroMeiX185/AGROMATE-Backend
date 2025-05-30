@@ -3,30 +3,25 @@ const router = Router();
 import Finance from '../Models/Finance.js';
 import { protect} from '../middleware/authMiddleware.js';
 import Farmer from '../Models/Farmer.js'; 
-//import { createFinanceRecord } from '../Controllers/financeC.js';
+import { getFinanceByNIC, deleteFinanceByNIC } from '../Controllers/financeC.js';
 
-const {
-  getFinanceByNIC,
-  deleteFinanceByNIC,
-} = require('../Controllers/financeC.js');
 
 // GET /api/finance/:nic
-router.get('/:nic', getFinanceByNIC);
+router.get('/:nic', protect,getFinanceByNIC);
 
 // DELETE /api/finance/:nic
-router.delete('/:nic', deleteFinanceByNIC);
+router.delete('/:nic', protect,  deleteFinanceByNIC);
 
-
-
+// POST /api/finance
 router.post('/', protect, async (req, res) => {
   try {
     
     const {
-      cropSale = 0,
+      cropSales = 0,
       moneySubsidies = 0,
       fertilizerSubsidies = 0,
       loan = 0,
-      otherIncome =0,
+      otherIncomes =0,
       seedCost= 0,
       fertilizerCost = 0,
       laborCost = 0,
@@ -45,11 +40,11 @@ router.post('/', protect, async (req, res) => {
     const safeNum = (val) => parseFloat(val) || 0;
 
     const totalIncome =
-      safeNum(cropSale) +
+      safeNum(cropSales) +
       safeNum(moneySubsidies) +
       safeNum(fertilizerSubsidies) +
       safeNum(loan) +
-      safeNum(otherIncome);
+      safeNum(otherIncomes);
 
     const totalExpenses =
       safeNum(seedCost) +
@@ -60,11 +55,11 @@ router.post('/', protect, async (req, res) => {
 
     const finance = new Finance({
         farmerId: req.user.id, // Assuming req.user contains the authenticated user's ID
-      cropSale: safeNum(cropSale),
+      cropSales: safeNum(cropSales),
       moneySubsidies: safeNum(moneySubsidies),
       fertilizerSubsidies: safeNum(fertilizerSubsidies),
       loan: safeNum(loan),
-      otherIncome: safeNum(otherIncome),
+      otherIncomes: safeNum(otherIncomes),
       seedCost: safeNum(seedCost),
       fertilizerCost: safeNum(fertilizerCost),
       laborCost: safeNum(laborCost),

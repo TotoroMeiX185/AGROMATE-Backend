@@ -5,15 +5,12 @@ import { getFarmerProfile } from '../Controllers/financeC.js';
 import { protect } from '../middleware/authMiddleware.js';
 import Farmer from '../Models/Afarmer.js';
 const router = express.Router();
-//import { getIncome } from '../Controllers/DincomeC.js';
-//import { getExpenses } from '../Controllers/Dexpense.js';
 
 
 // POST /api/farmers/register
 router.post('/register', registerFarmer);
 router.get('/profile', protect, getFarmerProfile);
-//router.get('/income', protect, getIncome);
-//router.get('/expenses', protect, getExpenses);
+
 router.get('/crops', protect , async (req, res) => {
   try {
     // Adjust this according to your DB schema
