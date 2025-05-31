@@ -13,6 +13,7 @@ import marketRoute from './Routes/marketRoute.js';
 import financeRoute from './Routes/financeRoute.js'; 
 import AcropRoute from './Routes/AcropRoute.js'; 
 import Fdashboard from './Routes/Fdashboard.js'; 
+import adminDashboardRoute from './Routes/adminDashboardRoute.js';
 
 dotenv.config();
 
@@ -34,7 +35,8 @@ app.use('/api/market', marketRoute);
 app.use('/api/finance', financeRoute); 
 app.use('/api/crops', AcropRoute); 
 app.use('/api/crops',farmerRoutes);
-app.use('/api/dashboard',Fdashboard); 
+app.use('/api/dashboard',Fdashboard);
+app.use('/api/admin/stats',adminDashboardRoute); // Admin dashboard routes
 
 
 //Error hadling
