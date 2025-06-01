@@ -36,7 +36,8 @@ app.use('/api/finance', financeRoute);
 app.use('/api/crops', AcropRoute); 
 app.use('/api/crops',farmerRoutes);
 app.use('/api/dashboard',Fdashboard);
-app.use('/api/admin/stats',adminDashboardRoute); // Admin dashboard routes
+app.use('/api/admin/stats',adminDashboardRoute);
+app.use('/api/farmer',marketRoute);
 
 
 //Error hadling

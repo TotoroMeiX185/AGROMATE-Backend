@@ -1,14 +1,12 @@
 import express from 'express';
-import {
-  getPrices,
-  addPrice,
-  expirePrice,
-  deletePrice
-} from '../Controllers/marketC.js';
-
+import {getPrices,addPrice,expirePrice,deletePrice} from '../Controllers/marketC.js';
 import { isAdmin, protect } from '../middleware/authMiddleware.js';
+import { getAllMarketPrices } from '../Controllers/marketC.js';
 
 const router = express.Router();
+
+// GET /api/market-prices
+router.get('/market-prices', protect, getAllMarketPrices);
 
 // Public - Get prices
 router.get('/prices', getPrices);

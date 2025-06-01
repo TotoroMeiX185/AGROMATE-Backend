@@ -1,5 +1,29 @@
 import Market from '../Models/Marketprice.js';
 
+//Get all market data(Farmer based)
+export const getAllMarketPrices = async (req, res) => {
+  try {
+    const prices = await Market.find({status:'active'});
+
+    const categorized = {
+      grains: [],
+      fruits: [],
+      cashcrops: [],
+      spices: []
+    };
+
+    prices.forEach(item => {
+      if (item.category && categorized[item.category]) {
+        categorized[item.category].push(item);
+      }
+    });
+
+    res.json(categorized);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch market prices.' });
+  }
+};
+
 
 // Get all active prices
 export const getPrices = async (req, res) => {
@@ -18,19 +42,35 @@ console.log("📥 API HIT: POST /api/market/prices");
 console.log("📥 Incoming Request Body:", req.body);
 
 
-    const { crop, sinhala, price, unit, category } = req.body;
+const { crop, sinhala, price, unit, category } = req.body;
 
-    const existing = await Market.findOne({ crop, status: 'active' });
+// Find most recent expired price
+    const lastPrice = await Market.findOne({ crop, category, 
+      status: 'expired' }).sort({ updatedAt: -1 });
 
-    let trend = 'stable';
+      let trend = 'stable';
     let change = 0;
 
-    if (existing) {
-      change = price - existing.price;
-      trend = change > 0 ? 'up' : change < 0 ? 'down' : 'stable';
-      existing.status = 'Expired';
-      await existing.save(); // Expire old record
+    if (lastPrice) {
+      change = parseFloat((price - lastPrice.price).toFixed(2));
+    
+      if(change > 0) trend = 'up';
+      else if(change <0) trend = 'down';
+
+      console.log('Last price:', lastPrice?.price);
+      console.log('New price:', price);
+      console.log('Calculated change:', change);
+      console.log('Trend:', trend);
     }
+
+   // Expire the old active price if it exists
+    await Market.updateMany({ crop, category, status: 'active' }, { $set: { status: 'expired' } });
+  
+    
+     /* // Expire the old record
+      lastPrice.status = 'Expired';
+      await lastPrice.save(); // Expire old record*/
+    
 
     const newPrice = new Market({
       crop,
@@ -38,6 +78,7 @@ console.log("📥 Incoming Request Body:", req.body);
       price,
       unit,
       category,
+      previousPrice: lastPrice?.price || 0,
       trend,
       change,
       status:'active',
