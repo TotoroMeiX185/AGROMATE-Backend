@@ -52,8 +52,8 @@ export const deleteFinanceByNIC = async (req, res) => {
       return res.status(404).json({ message: 'Farmer not found' });
     }
 
-    const deleted = await Finance.findAndDelete({ farmerId: farmer._id });
-    if (deleted.deletedCount === 0) {
+    const deleted = await Finance.findOneAndDelete({ farmerId: farmer._id });
+    if (!deleted) {
       return res.status(404).json({ message: 'No finance record found to delete' });
     }
     res.status(200).json({ message: 'Finance record deleted successfully' });

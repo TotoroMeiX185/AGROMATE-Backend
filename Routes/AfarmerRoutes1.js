@@ -3,6 +3,30 @@ import { Router } from "express";
 const router = Router();
 import Farmer1Schema from "../Models/Afarmer.js";
 import Farmer from "../Models/Farmer.js";
+import {sendVerificationEmail} from "../Utils/Mailer.js"
+// routes/farmers.js or routes/admin.js
+router.put("/:nic/approve", async (req, res) => {
+  try {
+    const farmer = await Farmer.findOne({ nic: req.params.nic });
+
+    if (!farmer) {
+      return res.status(404).json({ message: "Farmer not found" });
+    }
+
+    farmer.status = "approved";
+    await farmer.save();
+
+    // Send email
+   
+    await sendVerificationEmail(farmer.email, farmer.fullName);
+
+    res.status(200).json({ message: "Farmer approved and email sent" });
+  } catch (error) {
+    console.error("Approval error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 // Register a farmer (called by user registration form)
 router.post("/register", async (req, res) => {

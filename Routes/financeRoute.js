@@ -17,11 +17,11 @@ router.post('/', protect, async (req, res) => {
   try {
     
     const {
-      cropSales = 0,
+      cropSale = 0,
       moneySubsidies = 0,
       fertilizerSubsidies = 0,
       loan = 0,
-      otherIncomes =0,
+      otherIncome =0,
       seedCost= 0,
       fertilizerCost = 0,
       laborCost = 0,
@@ -40,11 +40,11 @@ router.post('/', protect, async (req, res) => {
     const safeNum = (val) => parseFloat(val) || 0;
 
     const totalIncome =
-      safeNum(cropSales) +
+      safeNum(cropSale) +
       safeNum(moneySubsidies) +
       safeNum(fertilizerSubsidies) +
       safeNum(loan) +
-      safeNum(otherIncomes);
+      safeNum(otherIncome);
 
     const totalExpenses =
       safeNum(seedCost) +
@@ -55,11 +55,11 @@ router.post('/', protect, async (req, res) => {
 
     const finance = new Finance({
         farmerId: req.user.id, // Assuming req.user contains the authenticated user's ID
-      cropSales: safeNum(cropSales),
+      cropSale: safeNum(cropSale),
       moneySubsidies: safeNum(moneySubsidies),
       fertilizerSubsidies: safeNum(fertilizerSubsidies),
       loan: safeNum(loan),
-      otherIncomes: safeNum(otherIncomes),
+      otherIncome: safeNum(otherIncome),
       seedCost: safeNum(seedCost),
       fertilizerCost: safeNum(fertilizerCost),
       laborCost: safeNum(laborCost),
