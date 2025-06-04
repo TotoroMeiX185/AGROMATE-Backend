@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: farmer-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        value: mongodb+srv://farmerData:2001sa%2A%23@cluster0.8lmqjxp.mongodb.net/farmerSystem?retryWrites=true&w=majority&appName=Cluster0
+      - key: JWT_SECRET
+        value: agromateSuperSecret123
